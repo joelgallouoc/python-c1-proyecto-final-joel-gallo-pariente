@@ -5,7 +5,8 @@ services:
   admin-service:
 
     build:
-      odontocare/admin_service
+      context: .
+      dockerfile: odontocare/admin_service/Dockerfile
 
     container_name:
       admin-service
@@ -30,9 +31,10 @@ services:
       start_period: 10s
 
   citas-service:
-
+  
     build:
-      odontocare/citas_service
+      context: .
+      dockerfile: odontocare/citas_service/Dockerfile
 
     container_name:
       citas-service
