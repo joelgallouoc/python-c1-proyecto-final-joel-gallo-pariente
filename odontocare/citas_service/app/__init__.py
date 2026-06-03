@@ -7,8 +7,6 @@ from app.extensions import (
     jwt
 )
 
-from app.models import *
-
 from app.blueprints.citas_bp import citas_bp
 from app.blueprints.system_bp import system_bp
 
