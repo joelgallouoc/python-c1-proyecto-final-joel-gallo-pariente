@@ -243,5 +243,3 @@ fabric.properties
 *.DS_Store*
 .python-version
 myenv/
-odontocare/admin_service/database/admin.db
-odontocare/citas_service/database/citas.db

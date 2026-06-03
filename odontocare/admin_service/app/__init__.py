@@ -7,8 +7,6 @@ from app.extensions import (
     jwt
 )
 
-from app.models import *
-
 from app.models.usuario import Usuario
 
 from app.blueprints.auth_bp import auth_bp

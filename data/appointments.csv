@@ -1,0 +1,52 @@
+fecha,motivo,id_paciente,id_doctor,id_centro
+2026-07-01 09:00,Revisión anual,1,3,1
+2026-07-01 10:00,Revisión anual,2,11,1
+2026-07-01 11:00,Revisión anual,3,3,1
+2026-07-01 09:00,Seguimiento ortodoncia,4,1,2
+2026-07-01 10:00,Ajuste de brackets,5,10,2
+2026-07-01 11:00,Control de alineadores,6,1,2
+2026-07-02 09:00,Valoración implante,7,2,3
+2026-07-02 10:00,Revisión post implante,8,9,3
+2026-07-02 11:00,Planificación implante,9,2,3
+2026-07-02 09:00,Primera revisión infantil,10,6,4
+2026-07-02 10:00,Aplicación de flúor,11,6,4
+2026-07-02 11:00,Control preventivo infantil,12,6,4
+2026-07-03 09:00,Dolor molar persistente,13,4,1
+2026-07-03 10:00,Tratamiento de conducto,14,12,1
+2026-07-03 11:00,Revisión endodoncia,15,4,1
+2026-07-03 09:00,Blanqueamiento dental,16,8,5
+2026-07-03 10:00,Diseño de sonrisa,17,8,5
+2026-07-03 11:00,Carillas estéticas,18,8,5
+2026-07-04 09:00,Limpieza dental,19,11,1
+2026-07-04 10:00,Control periodontal,20,5,1
+2026-07-04 11:00,Sangrado de encías,21,5,1
+2026-07-04 09:00,Ortodoncia invisible,22,10,2
+2026-07-04 10:00,Revisión brackets,23,1,2
+2026-07-04 11:00,Ajuste ortodoncia,24,10,2
+2026-07-05 09:00,Extracción simple,25,7,4
+2026-07-05 10:00,Muela del juicio,26,7,4
+2026-07-05 11:00,Cirugía oral menor,27,7,4
+2026-07-05 09:00,Valoración implante,28,9,3
+2026-07-05 10:00,Control implante,29,2,3
+2026-07-05 11:00,Rehabilitación oral,30,9,3
+2026-07-06 09:00,Revisión anual,1,3,1
+2026-07-06 10:00,Limpieza dental,2,11,1
+2026-07-06 11:00,Empaste por caries,3,11,1
+2026-07-06 09:00,Seguimiento ortodoncia,4,1,2
+2026-07-06 10:00,Control de alineadores,5,10,2
+2026-07-06 11:00,Revisión ortodoncia,6,1,2
+2026-07-07 09:00,Tratamiento de conducto,7,12,1
+2026-07-07 10:00,Dolor dental agudo,8,4,1
+2026-07-07 11:00,Revisión endodoncia,9,12,1
+2026-07-07 09:00,Blanqueamiento dental,10,8,5
+2026-07-07 10:00,Diseño de sonrisa,11,8,5
+2026-07-07 11:00,Carillas dentales,12,8,5
+2026-07-08 09:00,Control periodontal,13,5,1
+2026-07-08 10:00,Limpieza profunda,14,5,1
+2026-07-08 11:00,Revisión encías,15,5,1
+2026-07-08 09:00,Extracción simple,16,7,4
+2026-07-08 10:00,Cirugía oral menor,17,7,4
+2026-07-08 11:00,Control postoperatorio,18,7,4
+2026-07-09 09:00,Valoración implante,19,2,3
+2026-07-09 10:00,Revisión post implante,20,9,3
+2026-07-09 11:00,Control implante,21,2,3
