@@ -1,0 +1,11 @@
+tipo,username,password,nombre,telefono,especialidad,direccion
+
+CENTRO,,,Clinica Central,,,Calle Mayor 123
+CENTRO,,,Clinica Norte,,,Av. Europa 22
+
+DOCTOR,doctor1,1234,Carlos Perez,,Ortodoncia
+DOCTOR,doctor2,1234,Ana Ruiz,,Implantologia
+
+PACIENTE,paciente1,1234,Juan Garcia,666111222
+PACIENTE,paciente2,1234,Maria Lopez,666333444
+PACIENTE,paciente3,1234,Pedro Sanchez,666555666

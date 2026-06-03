@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+
+  admin-service:
+
+    build:
+      odontocare/admin_service
+
+    container_name:
+      admin-service
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      - JWT_SECRET_KEY=odontocare-super-secret-key
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:5000/health').raise_for_status()"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  citas-service:
+
+    build:
+      odontocare/citas_service
+
+    container_name:
+      citas-service
+
+    ports:
+      - "5001:5001"
+
+    environment:
+      - JWT_SECRET_KEY=odontocare-super-secret-key
+      - ADMIN_URL=http://admin-service:5000
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:5001/health').raise_for_status()"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    depends_on:
+      - admin-service
