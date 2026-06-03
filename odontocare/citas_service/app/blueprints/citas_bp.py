@@ -13,7 +13,7 @@ from app.utils.response import (
     error_response
 )
 
-from app.services.citas_service import cancelacion_cita, consultar_cita, crear_cita, obtener_listado_citas
+from app.services.citas_service import cancelacion_cita, crear_cita, obtener_listado_citas
 
 import logging
 
@@ -21,15 +21,18 @@ from app.decorators.role_required import role_required
 
 logger = logging.getLogger(__name__)
 
+
+
 citas_bp = Blueprint(
     "citas_bp",
     __name__,
     url_prefix="/citas"
 )
 
+
 @citas_bp.route("", methods=["POST"])
 @jwt_required()
-@role_required(["ADMIN", "CLIENTE"])
+@role_required("ADMIN", "CLIENTE")
 def agendar_cita():
 
     data = request.get_json()
@@ -54,9 +57,10 @@ def agendar_cita():
     
     return success_response(data=resultado.get("data"), status_code=201)
 
+
 @citas_bp.route("/<int:id_cita>", methods=["PUT"])
 @jwt_required()
-@role_required(["ADMIN", "SECRETARIA"])
+@role_required("ADMIN", "SECRETARIA")
 def cancelar_cita(id_cita):
 
     claims = get_jwt()
@@ -76,9 +80,10 @@ def cancelar_cita(id_cita):
         message=resultado.get("message")
     )
 
+
 @citas_bp.route("", methods=["GET"])
 @jwt_required()
-@role_required(["ADMIN", "SECRETARIA", "MEDICO"])
+@role_required("ADMIN", "SECRETARIA", "MEDICO")
 def listar_citas():
 
     claims = get_jwt()

@@ -18,6 +18,9 @@ def role_required(*roles):
 
             claims = get_jwt()
 
+            print(claims)
+            print(roles)
+
             if claims["role"] not in roles:
 
                 return jsonify({

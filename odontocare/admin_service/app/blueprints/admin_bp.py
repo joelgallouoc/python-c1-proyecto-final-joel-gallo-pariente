@@ -110,17 +110,11 @@ def obtencion_paciente(id_paciente):
 @role_required("ADMIN")
 def listado_pacientes():
 
-    ok, resultado = listar_pacientes()
-
-    if not ok:
-        return error_response(
-            resultado.get("message"),
-            resultado.get("status_code")
-        )
+    listado_pacientes = listar_pacientes()
 
     return success_response(
-        data=resultado.get("data"), 
-        pagination=resultado.get("pagination")
+        data=listado_pacientes.get("data"), 
+        pagination=listado_pacientes.get("pagination")
     )
 
 
