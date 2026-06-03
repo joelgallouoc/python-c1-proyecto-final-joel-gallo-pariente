@@ -21,7 +21,7 @@ def login():
 
     response.raise_for_status()
 
-    return response.json()["access_token"]
+    return response.json()["data"]["access_token"]
 
 def get_headers(token):
 
