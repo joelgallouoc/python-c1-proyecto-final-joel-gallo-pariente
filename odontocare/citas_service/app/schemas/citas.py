@@ -80,7 +80,7 @@ Campos:
 Validaciones:
 - IDs mayores que 0
 - Formato fecha:
-  YYYY-MM-DD HH:MM
+  YYYY-MM-DD
 - Estado cita = 'PROGRAMADA' o 'CANCELADA'
 
 Utilizado por:
@@ -134,7 +134,7 @@ Campos:
 
 Validaciones:
 - Formato fecha:
-  YYYY-MM-DD HH:MM
+  YYYY-MM-DD
 
 Utilizado por:
 - GET /citas
@@ -170,7 +170,7 @@ Campos:
 
 Validaciones:
 - Formato fecha:
-  YYYY-MM-DD HH:MM
+  YYYY-MM-DD
 
 Utilizado por:
 - GET /citas
@@ -186,7 +186,7 @@ class DoctorAppointmentFiltersSchema(PaginationSchema):
             
             datetime.strptime(
                 value,
-                "%Y-%m-%d %H:%M"
+                "%Y-%m-%d"
             )
 
         except ValueError:

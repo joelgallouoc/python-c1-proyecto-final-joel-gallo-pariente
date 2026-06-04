@@ -15,7 +15,7 @@ from app.utils.response import (
 )
 
 from app.services.usuarios_service import crear_usuario, listar_usuarios, obtener_usuario
-from app.services.doctores_service import crear_doctor, listar_doctores, obtener_doctor
+from app.services.doctores_service import crear_doctor, listar_doctores, obtener_doctor, obtener_doctor_a_partir_del_id_usuario
 from app.services.pacientes_service import crear_paciente, listar_pacientes, obtener_paciente
 from app.services.centros_service import crear_centro, listar_centros, obtener_centro
 from app.decorators.schema_validation import validate_body, validate_query
@@ -507,6 +507,58 @@ responses:
 def obtencion_doctor(id_doctor):
 
     ok, resultado = obtener_doctor(id_doctor)
+
+    if not ok:
+        return error_response(
+            resultado.get("message"),
+            resultado.get("status_code")
+        )
+
+    return success_response(data=resultado.get("data"), status_code=resultado.get("status_code"))
+
+
+"""
+Obtención de doctor a través de user_id
+---
+tags:
+  - Doctores
+
+security:
+  - Bearer: []
+
+description: |
+  Obtiene un doctor por su identificador.
+
+  Roles permitidos:
+  - ADMIN
+
+parameters:
+  - in: path
+    name: id_doctor
+    required: true
+    type: integer
+    example: 1
+
+responses:
+  200:
+    description: Doctor encontrado
+
+  403:
+    description: Acceso denegado
+
+  404:
+    description: Doctor no encontrado
+
+  422:
+    description: El endpoint no admite body ni query params
+"""
+@admin_bp.route("/doctores/user_id/<int:id_user>", methods=["GET"])
+@jwt_required()
+@role_required("ADMIN")
+@validate_request_data()
+def obtencion_doctor__a_partir_del_id_usuario(id_user):
+
+    ok, resultado = obtener_doctor_a_partir_del_id_usuario(id_user)
 
     if not ok:
         return error_response(

@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
 from app.services.admin_client import (
+    admin_internal_login,
+    get_doctor_through_user_id,
     get_paciente,
     get_doctor,
     get_centro
@@ -15,9 +17,9 @@ from flask import request
 
 from app.extensions import db
 
-import logging
-
 from app.utils.pagination import get_pagination
+
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +62,7 @@ def validar_paciente(
         paciente_id,
         token
     )
-
+    
     if response.status_code != 200:
 
         return (
@@ -285,13 +287,14 @@ Error:
 )
 """
 def validar_nueva_cita(
-    data,
-    token
+    data
 ):
     fecha = datetime.strptime(
         data["fecha"],
         "%Y-%m-%d %H:%M"
     )
+
+    token = admin_internal_login()
 
     ok, resultado = validar_paciente(
         data["id_paciente"],
@@ -369,13 +372,6 @@ Error:
 def crear_cita():
     
     data = request.get_json()
-
-    token = request.headers.get(
-        "Authorization"
-    ).replace(
-        "Bearer ",
-        ""
-    )
     
     fecha = datetime.strptime(
         data["fecha"],
@@ -383,8 +379,7 @@ def crear_cita():
     )
 
     ok, resultado = validar_nueva_cita(
-        data,
-        token
+        data
     )
 
     if not ok:
@@ -507,12 +502,12 @@ def obtener_listado_citas():
             "id_centro"
         )
 
-        id_estado = request.args.get(
-            "id_estado"
+        estado = request.args.get(
+            "estado"
         )
 
-        id_fecha = request.args.get(
-            "id_fecha"
+        fecha = request.args.get(
+            "fecha"
         )
 
         if id_doctor:
@@ -530,15 +525,15 @@ def obtener_listado_citas():
                 id_centro=id_centro
             )
 
-        if id_estado:
+        if estado:
             query = query.filter_by(
-                estado=id_estado
+                estado=estado
             )
 
-        if id_fecha:
+        if fecha:
 
             fecha_inicio = datetime.strptime(
-                id_fecha,
+                fecha,
                 "%Y-%m-%d"
             )
 
@@ -551,14 +546,14 @@ def obtener_listado_citas():
 
     elif role == "SECRETARIA":
 
-        id_fecha = request.args.get(
+        fecha = request.args.get(
             "fecha"
         )
 
-        if id_fecha:
+        if fecha:
 
             fecha_inicio = datetime.strptime(
-                id_fecha,
+                fecha,
                 "%Y-%m-%d"
             )
 
@@ -569,12 +564,32 @@ def obtener_listado_citas():
                 Cita.fecha < fecha_fin
             )
 
-    elif role == "MEDICO":
+    elif role == "DOCTOR":
 
-        user_id = int(get_jwt_identity())
+        fecha = request.args.get(
+            "fecha"
+        )
+
+        if fecha:
+
+            fecha_inicio = datetime.strptime(
+                fecha,
+                "%Y-%m-%d"
+            )
+
+            fecha_fin = fecha_inicio + timedelta(days=1)
+
+            query = query.filter(
+                Cita.fecha >= fecha_inicio,
+                Cita.fecha < fecha_fin
+            )
+
+        token = admin_internal_login()
+
+        id_doctor = get_doctor_through_user_id(int(get_jwt_identity()), token)
 
         query = query.filter(
-                Cita.id_doctor == user_id
+                Cita.id_doctor == id_doctor
             )
 
     pagination = query.paginate(page=page, per_page=size, error_out=False)

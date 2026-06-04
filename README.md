@@ -150,5 +150,3 @@ Se requiere una demostración visual, clara y concisa del aplicativo desarrollad
 * **Duración máxima**: 5 minutos.
 * **Contenido**: Debe evidenciar claramente el funcionamiento completo del aplicativo, incluyendo la interacción entre los microservicios.
 * **Funcionamiento**: Mostrar el flujo de trabajo del sistema, desde la inicialización de los servicios hasta la creación de una cita médica, destacando la comunicación RESTful entre los módulos.
-
-**Adicionalmente se añade un vídeo explicando todos los detalles no indicados en los requerimientos usados en el proyecto**

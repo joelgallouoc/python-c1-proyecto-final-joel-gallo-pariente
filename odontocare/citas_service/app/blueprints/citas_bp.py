@@ -29,7 +29,7 @@ citas_bp = Blueprint(
 
 @citas_bp.route("", methods=["POST"])
 @jwt_required()
-@role_required("ADMIN", "CLIENTE")
+@role_required("ADMIN", "PACIENTE")
 @validate_request_data(body_required=True)
 @validate_body(CreateCitaSchema)
 def agendar_cita():
@@ -160,7 +160,7 @@ def cancelar_cita(id_cita):
 
 @citas_bp.route("", methods=["GET"])
 @jwt_required()
-@role_required("ADMIN", "SECRETARIA", "MEDICO")
+@role_required("ADMIN", "SECRETARIA", "DOCTOR")
 @validate_request_data(allow_query=True)
 @validate_appointment_query_params_by_role()
 def listar_citas():

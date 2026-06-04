@@ -7,6 +7,20 @@ load_dotenv()
 
 ADMIN_URL = os.getenv("ADMIN_URL")
 
+
+def admin_internal_login():
+    response = requests.post(
+        f"{ADMIN_URL}/auth/login",
+        json={
+            "username": "admin",
+            "password": "admin123"
+        }
+    )
+
+    response.raise_for_status()
+
+    return response.json()["data"]["access_token"]
+
 def get_paciente(
     paciente_id,
     token
@@ -36,6 +50,18 @@ def get_doctor(
     )
 
     return response
+
+def get_doctor_through_user_id(user_id, token):
+
+    response = requests.get(
+        f"{ADMIN_URL}/admin/doctores/user_id/{user_id}",
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        timeout=5
+    )
+
+    return response.json()["data"]["id_doctor"]
 
 def get_centro(
     centro_id,

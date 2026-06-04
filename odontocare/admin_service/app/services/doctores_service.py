@@ -238,3 +238,62 @@ def obtener_doctor(id_doctor):
             "status_code": 200
         }
     )
+    
+    
+"""
+Servicio de consulta de doctores a partir del is de usuario.
+
+Parámetros:
+- id_user: int
+
+Responsabilidades:
+- Obtener el doctor que se indica a través del id de usuario.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": doctor.to_dict(),
+        "status_code": 200
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
+def obtener_doctor_a_partir_del_id_usuario(id_user):
+
+    doctor = Doctor.query.filter(
+            Doctor.id_usuario == id_user
+        ).first()
+
+    if not doctor:
+
+        logger.warning(f"Intento de obtención de doctor a través de id_usuario no encontrado: {id_user}")
+
+        return (
+            False,
+            {
+                "message": "Doctor no encontrado",
+                "status_code": 404
+            }
+        )
+
+    logger.info(f"Doctor obtenido con nombre {doctor.nombre} e ID {doctor.id_doctor}")
+
+    return (
+        True,
+        {
+            "data": doctor.to_dict(),
+            "status_code": 200
+        }
+    )
