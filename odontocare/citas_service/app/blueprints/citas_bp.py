@@ -35,27 +35,74 @@ citas_bp = Blueprint(
 @role_required("ADMIN", "CLIENTE")
 def agendar_cita():
 
-    data = request.get_json()
+  """
+  Crear cita médica
+  ---
+  tags:
+    - Citas
 
-    token = request.headers.get(
-        "Authorization"
-    ).replace(
-        "Bearer ",
-        ""
-    )
+  consumes:
+    - application/json
 
-    ok, resultado = crear_cita(
-        data,
-        token
-    )
+  security:
+    - Bearer: []
 
-    if not ok:
-        return error_response(
-                    resultado.get("message"),
-                    resultado.get("status_code")
-                )
-    
-    return success_response(data=resultado.get("data"), status_code=201)
+  description: |
+    Crea una nueva cita médica.
+
+    Roles permitidos:
+    - ADMIN
+    - PACIENTE
+
+  parameters:
+    - in: body
+      name: body
+      required: true
+      schema:
+        properties:
+          fecha:
+            type: string
+            example: 2026-07-01 09:00
+
+          motivo:
+            type: string
+            example: Revisión anual
+
+          id_paciente:
+            type: integer
+            example: 1
+
+          id_doctor:
+            type: integer
+            example: 3
+
+          id_centro:
+            type: integer
+            example: 1
+
+  responses:
+    201:
+      description: Cita creada correctamente
+
+    400:
+      description: Datos inválidos
+
+    404:
+      description: Paciente, doctor o centro no encontrado
+
+    409:
+      description: Conflicto de agenda
+  """ 
+
+  ok, resultado = crear_cita()
+
+  if not ok:
+      return error_response(
+                  resultado.get("message"),
+                  resultado.get("status_code")
+              )
+  
+  return success_response(data=resultado.get("data"), status_code=201)
 
 
 @citas_bp.route("/<int:id_cita>", methods=["PUT"])
@@ -63,22 +110,52 @@ def agendar_cita():
 @role_required("ADMIN", "SECRETARIA")
 def cancelar_cita(id_cita):
 
-    claims = get_jwt()
+  """
+  Cancelar cita médica
+  ---
+  tags:
+    - Citas
 
-    ok, resultado = cancelacion_cita(
-        id_cita,
-        claims["role"]
-    )
+  security:
+    - Bearer: []
 
-    if not ok:
-        return error_response(
-            message=resultado.get("message"),
-            status_code=resultado.get("status_code")
-        )
+  description: |
+    Cancela una cita existente.
 
-    return success_response(
-        message=resultado.get("message")
-    )
+    Roles permitidos:
+    - ADMIN
+    - SECRETARIA
+
+  parameters:
+    - in: path
+      name: id_cita
+      required: true
+      type: integer
+
+  responses:
+    200:
+      description: Cita cancelada correctamente
+
+    404:
+      description: Cita no encontrada
+
+    409:
+      description: La cita ya estaba cancelada
+  """
+
+  ok, resultado = cancelacion_cita(
+      id_cita
+  )
+
+  if not ok:
+      return error_response(
+          message=resultado.get("message"),
+          status_code=resultado.get("status_code")
+      )
+
+  return success_response(
+      message=resultado.get("message")
+  )
 
 
 @citas_bp.route("", methods=["GET"])
@@ -86,21 +163,72 @@ def cancelar_cita(id_cita):
 @role_required("ADMIN", "SECRETARIA", "MEDICO")
 def listar_citas():
 
-    claims = get_jwt()
+  """
+  Listar citas
+  ---
+  tags:
+    - Citas
 
-    role = claims["role"]
+  security:
+    - Bearer: []
 
-    ok, resultado = obtener_listado_citas(
-        role
-    )
+  description: |
+    Devuelve las citas según el rol del usuario.
 
-    if not ok:
-        return error_response(
-            message=resultado.get("message"),
-            status_code=resultado.get("status_code")
-        )
+    ADMIN:
+    - Puede filtrar por doctor, paciente, centro, fecha o estado.
+ 
+    SECRETARIA:
+    - Puede filtrar por fecha.
 
-    return success_response(
-        data=resultado.get("data"),
-        pagination=resultado.get("pagination")
-    )
+    MEDICO:
+    - Solo puede consultar sus propias citas.
+
+    En caso de añadir filtros no disponibles para tu rol, se omitirán.
+
+  parameters:
+    - in: query
+      name: fecha
+      type: string
+
+    - in: query
+      name: id_doctor
+      type: integer
+
+    - in: query
+      name: id_paciente
+      type: integer
+
+    - in: query
+      name: id_centro
+      type: integer
+
+    - in: query
+      name: estado
+      type: string
+
+    - in: query
+      name: page
+      type: integer
+
+    - in: query
+      name: per_page
+      type: integer
+
+  responses:
+    200:
+      description: Listado de citas
+  """
+
+  ok, resultado = obtener_listado_citas()
+
+  if not ok:
+      return error_response(
+          message=resultado.get("message"),
+          status_code=resultado.get("status_code")
+      )
+
+  return success_response(
+      data=resultado.get("data"),
+      pagination=resultado.get("pagination")
+  )

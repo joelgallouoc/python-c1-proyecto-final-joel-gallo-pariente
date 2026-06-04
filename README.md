@@ -132,6 +132,11 @@ Se deberá entregar documentación o scripts que incluyan, de forma clara y orde
 * **Endpoint utilizado**: Ruta completa del servicio REST.
 * **Archivo de entrada**: Cuerpo de la solicitud enviado, obligatoriamente en formato **JSON**.
 
+Se genera documentación swagger accesible a traves de:
+* {BASE_SERVICE_URL}/apidocs
+
+Adicionalmente a nivel de código se comenta el código correctamente para facilitar su comprensión y se añade una colección de PostMan para poder realizar peticiones sobre los endpoints.
+
 ---
 
 ### Video Explicativo

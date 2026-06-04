@@ -8,7 +8,7 @@ from app.services.admin_client import (
 
 from app.models.cita import Cita
 
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt, get_jwt_identity
 
 
 from flask import request
@@ -134,6 +134,9 @@ def existe_conflicto(
         None
     )
 
+# Validación de nueva cita. Se comprueba que el paciente, doctor y centro existen, que el doctor está disponible a esa hora, etc... 
+# Se usa un booleano 'ok' para indicar si la validación ha sido correcta o no, y un diccionario 'resultado' para almacenar el mensaje de error o los datos de la cita creada.
+# En caso de que alguna validación falle, se devuelve un error con el mensaje correspondiente.
 def validar_nueva_cita(
     data,
     token
@@ -180,18 +183,22 @@ def validar_nueva_cita(
         None
     )
 
-def crear_cita(
-    data,
-    token
-):
+def crear_cita():
+    
+    data = request.get_json()
+
+    token = request.headers.get(
+        "Authorization"
+    ).replace(
+        "Bearer ",
+        ""
+    )
+    
     fecha = datetime.strptime(
         data["fecha"],
         "%Y-%m-%d %H:%M"
     )
 
-    # Validación de nueva cita. Se comprueba que el paciente, doctor y centro existen, que el doctor está disponible a esa hora, etc... 
-    # Se usa un booleano 'ok' para indicar si la validación ha sido correcta o no, y un diccionario 'resultado' para almacenar el mensaje de error o los datos de la cita creada.
-    # En caso de que alguna validación falle, se devuelve un error con el mensaje correspondiente.
     ok, resultado = validar_nueva_cita(
         data,
         token
@@ -241,9 +248,11 @@ def consultar_cita(
         cita.to_dict()
     )
 
-def obtener_listado_citas(
-    role
-):
+def obtener_listado_citas():
+
+    claims = get_jwt()
+
+    role = claims["role"]
 
     page, size = get_pagination()
 

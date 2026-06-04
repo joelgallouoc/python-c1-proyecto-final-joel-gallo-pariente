@@ -1,5 +1,7 @@
 from flask import Flask
 
+from flasgger import Swagger
+
 from app.config import Config
 
 from app.extensions import (
@@ -12,6 +14,8 @@ from app.models.usuario import Usuario
 from app.blueprints.auth_bp import auth_bp
 from app.blueprints.admin_bp import admin_bp
 from app.blueprints.system_bp import system_bp
+from odontocare.admin_service.app.handlers.error_handlers import register_error_handlers
+from odontocare.admin_service.app.monitoring.request_logging import register_request_logging
 
 
 def create_app():
@@ -26,6 +30,9 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(system_bp)
+
+    register_request_logging(app)
+    register_error_handlers(app)
 
     with app.app_context():
 
@@ -49,4 +56,27 @@ def create_app():
                 "Usuario admin creado"
             )
 
+    swagger_config = {
+        "swagger": "2.0",
+        "info": {
+            "title": "OdontoCare Admin Service",
+            "description": "API de administración de OdontoCare",
+            "version": "1.0.0"
+        },
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "JWT Authorization header. Ejemplo: Bearer eyJ..."
+            }
+        }
+    }
+
+    Swagger(
+        app,
+        template=swagger_config
+    )
+
     return app
+

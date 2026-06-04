@@ -2,6 +2,8 @@ from flask import Blueprint
 
 from flask_jwt_extended import jwt_required
 
+from app.utils.enums import Roles
+
 from app.decorators.role_required import (
     role_required,
     user_role_required
@@ -29,7 +31,7 @@ admin_bp = Blueprint(
 @jwt_required()
 @role_required("ADMIN")
 @user_role_required("ADMIN", "SECRETARIA")
-def creacion_usuario():
+def creacion_usuario(): 
 
     ok, resultado = crear_usuario()
 
@@ -72,7 +74,6 @@ def obtencion_usuario(id_usuario):
 
 
 
-
 @admin_bp.route("/pacientes", methods=["POST"])
 @jwt_required()
 @role_required("ADMIN")
@@ -101,7 +102,7 @@ def obtencion_paciente(id_paciente):
             resultado.get("message"),
             resultado.get("status_code")
         )
-    
+
     return success_response(data=resultado.get("data"), status_code=resultado.get("status_code"))
 
 
@@ -113,10 +114,9 @@ def listado_pacientes():
     listado_pacientes = listar_pacientes()
 
     return success_response(
-        data=listado_pacientes.get("data"), 
+        data=listado_pacientes.get("data"),
         pagination=listado_pacientes.get("pagination")
     )
-
 
 
 @admin_bp.route("/doctores", methods=["POST"])
@@ -131,7 +131,7 @@ def creacion_doctor():
             resultado.get("message"),
             resultado.get("status_code")
         )
-    
+
     return success_response(data=resultado.get("data"), status_code=resultado.get("status_code"))
 
 
@@ -160,7 +160,7 @@ def listado_doctores():
 
     return success_response(
         data=doctor_list.get("data"),
-        pagination=doctor_list.get("pagination") 
+        pagination=doctor_list.get("pagination")
         )
 
 
@@ -178,7 +178,7 @@ def creacion_centro():
             resultado.get("message"),
             resultado.get("status_code")
         )
-    
+
     return success_response(data=resultado.get("data"), status_code=resultado.get("status_code"))
 
 

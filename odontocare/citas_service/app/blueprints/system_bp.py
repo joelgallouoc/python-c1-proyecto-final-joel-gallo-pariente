@@ -2,8 +2,6 @@ from flask import Blueprint
 
 from sqlalchemy import text
 
-import requests
-
 from app.extensions import db
 
 from app.services.health_service import (
@@ -18,6 +16,10 @@ from app.utils.response import (
     success_response,
     error_response
 )
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 system_bp = Blueprint(
     "system_bp",

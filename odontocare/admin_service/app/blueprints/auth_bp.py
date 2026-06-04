@@ -10,6 +10,8 @@ from app.services.auth_service import log_in, obtain_me
 
 import logging
 
+from app.decorators.exception_handler import handle_exceptions
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,35 +22,84 @@ auth_bp = Blueprint(
 )
 
 
-
 @auth_bp.route("/login", methods=["POST"])
 def login():
 
-    ok, resultado = log_in()
+  """
+  Login de usuario
+  ---
+  tags:
+  - Auth
 
-    if not ok:
-        return error_response(
-            resultado["message"],
-            resultado["status_code"]
-        )
+  consumes:
+    - application/json
 
-    return success_response(data={
-        "access_token": resultado["data"]["access_token"]
-    })
+  parameters:
+    - in: body
+      name: body
+      required: true
+      schema:
+        properties:
+          username:
+            type: string
+            example: admin
+          password:
+            type: string
+            example: admin123
+
+  responses:
+    200:
+      description: Login correcto
+
+    401:
+      description: Credenciales inválidas
+
+    404:
+      description: Usuario no encontrado
+  """ 
+
+  ok, resultado = log_in()
+
+  if not ok:
+      return error_response(
+          resultado["message"],
+          resultado["status_code"]
+      )
+
+  return success_response(data={
+      "access_token": resultado["data"]["access_token"]
+  })
 
 
 @auth_bp.route("/me", methods=["GET"])
 @jwt_required()
 def me():
 
-    ok, resultado = obtain_me()
+  """
+  Información del usuario autenticado
+  ---
+  tags:
+    - Auth
 
-    if not ok:
-        return error_response(
-            resultado["message"],
-            resultado["status_code"]
-        )
-    
-    return success_response(
-        data=resultado["data"]
-    )
+  security:
+    - Bearer: []
+
+  responses:
+    200:
+      description: Usuario autenticado
+
+    404:
+      description: Usuario no encontrado
+  """
+
+  ok, resultado = obtain_me()
+
+  if not ok:
+      return error_response(
+          resultado["message"],
+          resultado["status_code"]
+      )
+
+  return success_response(
+      data=resultado["data"]
+  )
