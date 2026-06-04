@@ -114,13 +114,13 @@ class AdminCitaFiltersSchema(PaginationSchema):
 
             datetime.strptime(
                 value,
-                "%Y-%m-%d %H:%M"
+                "%Y-%m-%d"
             )
 
         except ValueError:
 
             raise ValueError(
-                "Date format must be YYYY-MM-DD HH:MM"
+                "Date format must be YYYY-MM-DD"
             )
 
         return value
@@ -150,13 +150,13 @@ class SecretariaAppointmentFiltersSchema(PaginationSchema):
             
             datetime.strptime(
                 value,
-                "%Y-%m-%d %H:%M"
+                "%Y-%m-%d"
             )
 
         except ValueError:
 
             raise ValueError(
-                "Date format must be YYYY-MM-DD HH:MM"
+                "Date format must be YYYY-MM-DD"
             )
 
         return value
@@ -192,7 +192,7 @@ class DoctorAppointmentFiltersSchema(PaginationSchema):
         except ValueError:
 
             raise ValueError(
-                "Date format must be YYYY-MM-DD HH:MM"
+                "Date format must be YYYY-MM-DD"
             )
 
         return value

@@ -95,7 +95,7 @@ def user_role_required(*roles):
 
             data = request.get_json()
 
-            if data.get("role") not in roles:
+            if data.get("rol") not in roles:
 
                 return jsonify({
                     "success": False,

@@ -19,7 +19,7 @@ Utilizado por:
 class CreateUserSchema(NewBaseModel):
     username: str
     password: str
-    role: Roles
+    rol: Roles
 
 
 """

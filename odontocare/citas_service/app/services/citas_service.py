@@ -495,50 +495,50 @@ def obtener_listado_citas():
 
     if role == "ADMIN":
 
-        doctor = request.args.get(
-            "doctor"
+        id_doctor = request.args.get(
+            "id_doctor"
         )
 
-        paciente = request.args.get(
-            "paciente"
+        id_paciente = request.args.get(
+            "id_paciente"
         )
 
-        centro = request.args.get(
-            "centro"
+        id_centro = request.args.get(
+            "id_centro"
         )
 
-        estado = request.args.get(
-            "estado"
+        id_estado = request.args.get(
+            "id_estado"
         )
 
-        fecha = request.args.get(
-            "fecha"
+        id_fecha = request.args.get(
+            "id_fecha"
         )
 
-        if doctor:
+        if id_doctor:
             query = query.filter_by(
-                id_doctor=doctor
+                id_doctor=id_doctor
             )
 
-        if paciente:
+        if id_paciente:
             query = query.filter_by(
-                id_paciente=paciente
+                id_paciente=id_paciente
             )
 
-        if centro:
+        if id_centro:
             query = query.filter_by(
-                id_centro=centro
+                id_centro=id_centro
             )
 
-        if estado:
+        if id_estado:
             query = query.filter_by(
-                estado=estado
+                estado=id_estado
             )
 
-        if fecha:
+        if id_fecha:
 
             fecha_inicio = datetime.strptime(
-                fecha,
+                id_fecha,
                 "%Y-%m-%d"
             )
 
@@ -551,14 +551,14 @@ def obtener_listado_citas():
 
     elif role == "SECRETARIA":
 
-        fecha = request.args.get(
+        id_fecha = request.args.get(
             "fecha"
         )
 
-        if fecha:
+        if id_fecha:
 
             fecha_inicio = datetime.strptime(
-                fecha,
+                id_fecha,
                 "%Y-%m-%d"
             )
 

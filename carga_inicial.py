@@ -92,6 +92,15 @@ def cargar_pacientes(token):
         ADMIN_URL
     )
 
+def cargar_usuarios(token):
+
+    procesar_csv(
+        "data/usuarios.csv",
+        "/admin/usuarios",
+        token,
+        ADMIN_URL
+    )
+
 def cargar_citas(token):
 
     with open(
@@ -149,6 +158,9 @@ def main():
 
     print("Cargando pacientes...")
     cargar_pacientes(token)
+
+    print("Cargando usuarios...")
+    cargar_usuarios(token)
 
     print("Cargando citas...")
     cargar_citas(token)
