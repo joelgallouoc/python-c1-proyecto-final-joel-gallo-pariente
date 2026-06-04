@@ -12,6 +12,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+"""
+Valida la existencia de un centro
+
+Parámetros:
+- nombre: int
+
+Funcionamiento:
+- Comprueba la existencia de un centro.
+
+Retorno:
+
+Success:
+(
+    True,
+    None
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_nuevo_centro(nombre):
 
     centro_existente = Centro.query.filter_by(
@@ -35,6 +62,35 @@ def validar_nuevo_centro(nombre):
         None
     )
 
+
+"""
+Servicio de creación de centros.
+
+Responsabilidades:
+- Obtener los datos de la petición.
+- Validar centro.
+- Registrar el centro en base de datos.
+
+Validaciones:
+- No debe existir el centro.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": centro.to_dict(),
+        "status_code": 201
+    }
+)
+
+Error:
+(
+    ok, 
+    resultado
+)
+"""
 def crear_centro():
     data = request.get_json()
 
@@ -67,6 +123,37 @@ def crear_centro():
         }
     )
 
+
+"""
+Servicio de consulta de centros.
+
+Parámetros:
+- id_centro: int
+
+Responsabilidades:
+- Obtener el centro que se indica.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": centro.to_dict(),
+        "status_code": 200
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def obtener_centro(id_centro):
     centro = Centro.query.get(id_centro)
 
@@ -92,6 +179,30 @@ def obtener_centro(id_centro):
         }
     )
 
+
+"""
+Servicio de listado de centros.
+
+Responsabilidades:
+- Obtener los centros que se indican.
+
+Retorno:
+(
+    True, 
+    {
+        "data": [
+            c.to_dict()
+            for c in pagination.items
+        ],
+        "pagination": {
+            "page": pagination.page,
+            "size": pagination.per_page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages
+        }
+    }
+)
+"""
 def listar_centros():
     page, size = get_pagination()
 

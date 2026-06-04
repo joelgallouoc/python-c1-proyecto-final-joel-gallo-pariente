@@ -9,13 +9,33 @@ from flask_jwt_extended import (
     get_jwt
 )
 
-'''
-Decoradores para verificar roles de usuario en rutas protegidas. El decorador `role_required` verifica el rol del usuario que realiza la peticióna través de los claims del JWT.
+"""
+Decorador de autorización basado en roles.
 
-params:
-- *roles: Lista de roles permitidos para la creación de usuarios (por ejemplo, "ADMIN", "SECRETARIA").
+Verifica que el usuario autenticado mediante JWT posea
+uno de los roles permitidos para acceder al endpoint.
 
-'''
+Funcionamiento:
+- Comprueba la existencia de un JWT válido.
+- Obtiene los claims del token.
+- Valida que el rol contenido en el claim 'role'
+  pertenezca a la lista de roles permitidos.
+
+Parámetros:
+- *roles:
+  Lista variable de roles autorizados.
+
+Ejemplo:
+@role_required("ADMIN")
+
+@role_required(
+    "ADMIN",
+    "SECRETARIA"
+)
+
+Posibles respuestas:
+- 403: Access denied
+"""
 def role_required(*roles):
 
     def decorator(fn):
@@ -40,14 +60,32 @@ def role_required(*roles):
 
     return decorator
 
-'''
-Decorador para verificar roles específicos en la creación de usuarios. Este decorador se utiliza para validar que el rol proporcionado en el cuerpo de la petición sea uno de los roles 
-permitidos (ADMIN o SECRETARIA) al crear un nuevo usuario.
 
-params:
-- *roles: Lista de roles permitidos para la creación de usuarios (por ejemplo, "ADMIN", "SECRETARIA").
+"""
+Decorador de validación de roles de usuario.
 
-'''
+Se utiliza durante la creación de usuarios para validar
+que el rol recibido en el body de la petición sea uno de
+los permitidos. Pensando en una aplicacion profesional podría ser usada en futuros endpoints, por ello se ha decidido generar un decorador.
+
+Funcionamiento:
+- Obtiene el body de la petición.
+- Comprueba el campo 'role'.
+- Valida que pertenezca a los roles permitidos.
+
+Parámetros:
+- *roles:
+  Roles permitidos para el usuario a crear.
+
+Ejemplo:
+@user_role_required(
+    "ADMIN",
+    "SECRETARIA"
+)
+
+Posibles respuestas:
+- 400: User role incorrect
+"""
 def user_role_required(*roles):
 
     def decorator(fn):

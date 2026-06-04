@@ -6,11 +6,29 @@ from pydantic import (
     Field
 )
 
+
+"""
+Esquema base que añade la restricción de recoger elementos no indicados en el esquema.
+
+Utilizado por:
+- Todos los endpoints.
+"""
 class NewBaseModel(BaseModel):
     model_config = ConfigDict(
         extra="forbid"
     )
 
+
+"""
+Esquema base para paginación.
+
+Campos:
+- page: int > 0
+- per_page: int > 0
+
+Utilizado por:
+- Todos los endpoints de listado.
+"""
 class PaginationSchema(NewBaseModel):
 
     page: Optional[int] = Field(
@@ -18,7 +36,7 @@ class PaginationSchema(NewBaseModel):
         gt=0
     )
 
-    per_page: Optional[int] = Field(
+    size: Optional[int] = Field(
         default=100,
         gt=0
     )

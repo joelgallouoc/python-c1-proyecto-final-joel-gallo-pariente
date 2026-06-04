@@ -1,1 +1,0 @@
-from app.blueprints.citas_bp import citas_bp

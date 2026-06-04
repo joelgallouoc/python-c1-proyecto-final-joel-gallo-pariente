@@ -13,8 +13,8 @@ import logging
 
 from app.decorators.role_required import role_required
 from app.decorators.request_data_validation import validate_request_data
-from app.decorators.schema_validation import validate_body, validate_query
-from app.schemas.citas import CreateAppointmentSchema, AppointmentFiltersSchema
+from app.decorators.schema_validation import validate_appointment_query_params_by_role, validate_body
+from app.schemas.citas import CreateCitaSchema
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ citas_bp = Blueprint(
 @jwt_required()
 @role_required("ADMIN", "CLIENTE")
 @validate_request_data(body_required=True)
-@validate_body(CreateAppointmentSchema)
+@validate_body(CreateCitaSchema)
 def agendar_cita():
 
   """
@@ -161,8 +161,8 @@ def cancelar_cita(id_cita):
 @citas_bp.route("", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN", "SECRETARIA", "MEDICO")
-@validate_request_data(query_required=True)
-@validate_query(AppointmentFiltersSchema)
+@validate_request_data(allow_query=True)
+@validate_appointment_query_params_by_role()
 def listar_citas():
 
   """

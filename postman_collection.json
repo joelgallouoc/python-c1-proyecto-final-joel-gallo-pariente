@@ -1,0 +1,704 @@
+{
+  "info": {
+    "_postman_id": "6a07a2c3-8566-4a7e-bce3-ffbbbd725e50",
+    "name": "Local final project testing",
+    "description": "Conjunto de llamadas a endpoints (Peticiones HTTP) de los servicios de Administración y Citas de Odontocare.\n\nIMPORTANTE. Se requiere:\n\n- Añadir el Bearer Token en Authorization a nivel de entorno (Aqui) para poder realizar las peticiones\n    \n- Se indican las URLs usadas en las pruebas en las variables de entorno. En caso de cambiar el mapeo de puertos (pruebas locales) o de levantar las imágenes en otro entorno habrá que cambiar la URL a la del HOST y PUERTO correspondientes\n    \n- Todas las respuestas están correctamente estructuradas según los siguientes esquemas que dependen del tipo de respuesta:\n    \n    - Error:\n        \n        - message = Mensaje de error\n            \n        - status_code = Código de error (Por defecto 400)\n            \n        - data = Datos del error (En caso de que sean necesarios\n            \n    - Success / Respuesta correcta:\n        \n        - Success = True\n            \n        - data = Datos solicitados\n            \n        - message = Mensaje\n            \n        - status_code = Codigo HTTP (Por defecto 200)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55407342",
+    "_collection_link": "https://go.postman.co/collection/55407342-6a07a2c3-8566-4a7e-bce3-ffbbbd725e50?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "UOC final project API testing",
+      "item": [
+        {
+          "name": "ADMIN",
+          "item": [
+            {
+              "name": "Centros",
+              "item": [
+                {
+                  "name": "Creación centro",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"nombre\": \"Clinica Central\",\r\n    \"direccion\": \"Calle Mayor 123\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/centros",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "centros"
+                      ]
+                    },
+                    "description": "Crea un nuevo centro médico.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nCuerpo de la petición:\n\nbody\n\n- required: true\n    \n\nschema\n\n- nombre\n    \n    - type: string\n        \n    - example: Clínica Dental Centro\n        \n- direccion\n    \n    - type: string\n        \n    - example: Calle Mayor 25, Madrid\n        \n\nPosibles respuestas:\n\n- 201: Centro creado correctamente.\n    \n- 403: Acceso denegado.\n    \n- 409: El centro ya existe.\n    \n- 422: Error de validación."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Listado centros",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/centros?page=1&size=1",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "centros"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1",
+                          "description": "Número de página de la paginación"
+                        },
+                        {
+                          "key": "size",
+                          "value": "1",
+                          "description": "Número de elementos por página"
+                        }
+                      ]
+                    },
+                    "description": "Obtiene un listado paginado de centros.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de consulta:\n\nquery params\n\n- page\n    \n    - type: integer\n        \n    - example: 1\n        \n- per_page\n    \n    - type: integer\n        \n    - example: 10\n        \n\nPosibles respuestas:\n\n- 200: Listado obtenido correctamente.\n    \n- 403: Acceso denegado.\n    \n- 422: Parámetros de consulta inválidos."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Obtener centro",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/centros/1",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "centros",
+                        "1"
+                      ]
+                    },
+                    "description": "Obtiene un centro por su identificador.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de ruta:\n\n- id_centro\n    \n    - type: integer\n        \n    - example: 1\n        \n\nEste endpoint no admite body ni query params.\n\nPosibles respuestas:\n\n- 200: Centro encontrado.\n    \n- 403: Acceso denegado.\n    \n- 404: Centro no encontrado.\n    \n- 422: El endpoint no admite body ni query params."
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Doctores",
+              "item": [
+                {
+                  "name": "Creación doctor",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\": \"doctor3\",\r\n    \"password\": \"1234\",\r\n    \"nombre\": \"Antonio Fernandez\",\r\n    \"especialidad\": \"Dermatología\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/doctores",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "doctores"
+                      ]
+                    },
+                    "description": "Crea un nuevo doctor.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nCuerpo de la petición:\n\nbody\n\n- required: true\n    \n\nschema\n\n- username\n    \n    - type: string\n        \n    - example: doctor.garcia\n        \n- password\n    \n    - type: string\n        \n    - example: doctor123\n        \n- nombre\n    \n    - type: string\n        \n    - example: María García\n        \n- especialidad\n    \n    - type: string\n        \n    - example: Ortodoncia\n        \n\nReglas de negocio:\n\n- El nombre de usuario debe ser único.\n    \n\nPosibles respuestas:\n\n- 201: Doctor creado correctamente.\n    \n- 403: Acceso denegado.\n    \n- 409: El doctor ya existe.\n    \n- 422: Error de validación."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Listado doctores",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/doctores?page=1&size=2",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "doctores"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1",
+                          "description": "Página de la paginación"
+                        },
+                        {
+                          "key": "size",
+                          "value": "2",
+                          "description": "Número de elementos por página"
+                        }
+                      ]
+                    },
+                    "description": "Obtiene un listado paginado de doctores.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de consulta:\n\nquery params\n\n- page\n    \n    - type: integer\n        \n    - example: 1\n        \n- per_page\n    \n    - type: integer\n        \n    - example: 10\n        \n\nPosibles respuestas:\n\n- 200: Listado obtenido correctamente.\n    \n- 403: Acceso denegado.\n    \n- 422: Parámetros de consulta inválidos."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Obtener doctor",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/doctores/1",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "doctores",
+                        "1"
+                      ]
+                    },
+                    "description": "Obtiene un doctor por su identificador.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de ruta:\n\n- id_doctor\n    \n    - type: integer\n        \n    - example: 1\n        \n\nEste endpoint no admite body ni query params.\n\nPosibles respuestas:\n\n- 200: Doctor encontrado.\n    \n- 403: Acceso denegado.\n    \n- 404: Doctor no encontrado.\n    \n- 422: El endpoint no admite body ni query params."
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Pacientes",
+              "item": [
+                {
+                  "name": "Creación paciente",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\": \"juan\",\r\n    \"password\": \"1234\",\r\n    \"nombre\": \"Juan Garcia\",\r\n    \"telefono\": \"666111222\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/pacientes",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "pacientes"
+                      ]
+                    },
+                    "description": "Crea un nuevo paciente.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nCuerpo de la petición:\n\nbody\n\n- required: true\n    \n\nschema\n\n- username\n    \n    - type: string\n        \n    - example: juan.perez\n        \n- password\n    \n    - type: string\n        \n    - example: paciente123\n        \n- nombre\n    \n    - type: string\n        \n    - example: Juan Pérez\n        \n- telefono\n    \n    - type: string\n        \n    - example: 612345678\n        \n\nReglas de negocio:\n\n- El nombre de usuario debe ser único.\n    \n\nPosibles respuestas:\n\n- 201: Paciente creado correctamente.\n    \n- 403: Acceso denegado.\n    \n- 409: El paciente ya existe.\n    \n- 422: Error de validación."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Listado pacientes",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/pacientes",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "pacientes"
+                      ]
+                    },
+                    "description": "Obtiene un listado paginado de pacientes.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de consulta:\n\nquery params\n\n- page\n    \n    - type: integer\n        \n    - example: 1\n        \n- per_page\n    \n    - type: integer\n        \n    - example: 10\n        \n\nPosibles respuestas:\n\n- 200: Listado obtenido correctamente.\n    \n- 403: Acceso denegado.\n    \n- 422: Parámetros de consulta inválidos."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Obtener paciente",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/pacientes/1",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "pacientes",
+                        "1"
+                      ]
+                    },
+                    "description": "Obtiene un paciente por su identificador.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de ruta:\n\n- id_paciente\n    \n    - type: integer\n        \n    - example: 1\n        \n\nEste endpoint no admite body ni query params.\n\nPosibles respuestas:\n\n- 200: Paciente encontrado.\n    \n- 403: Acceso denegado.\n    \n- 404: Paciente no encontrado.\n    \n- 422: El endpoint no admite body ni query params."
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Usuarios",
+              "item": [
+                {
+                  "name": "Creación usuario",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\": \"paciente35\",\r\n    \"password\": \"98653265\",\r\n    \"rol\": \"PACIENTE\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/usuarios",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "usuarios"
+                      ]
+                    },
+                    "description": "Crea un nuevo usuario del sistema.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nRestricciones adicionales:\n\n- Solo se permite crear usuarios con rol ADMIN o SECRETARIA.\n    \n\nCuerpo de la petición:\n\n- body\n    \n- required: true\n    \n    - schema\n        \n        - username\n            \n            - type: string\n                \n            - example: secretaria1\n                \n        - password\n            \n            - type: string\n                \n            - example: secretaria123\n                \n        - role\n            \n            - type: string\n                \n            - example: SECRETARIA\n                \n            \n            Valores permitidos:\n            \n            - ADMIN\n                \n            - SECRETARIA\n                \n\nReglas de negocio:\n\n- El nombre de usuario debe ser único.\n    \n- Solo se pueden crear usuarios con rol ADMIN o SECRETARIA.\n    \n\nPosibles respuestas:\n\n- 201: Usuario creado correctamente.\n    \n- 400: Rol de usuario inválido.\n    \n- 403: Acceso denegado.\n    \n- 409: El usuario ya existe.\n    \n- 422: Error de validación."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Listado usuarios",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/usuarios",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "usuarios"
+                      ]
+                    },
+                    "description": "Obtiene un listado paginado de usuarios.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de consulta:\n\nquery params\n\n- page\n    \n    - type: integer\n        \n    - example: 1\n        \n- per_page\n    \n    - type: integer\n        \n    - example: 10\n        \n\nPosibles respuestas:\n\n- 200: Listado obtenido correctamente.\n    \n- 403: Acceso denegado.\n    \n- 422: Parámetros de consulta inválidos."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Obtener usuario",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/admin/usuarios/1",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "admin",
+                        "usuarios",
+                        "1"
+                      ]
+                    },
+                    "description": "Obtiene un usuario por su identificador.\n\nRoles permitidos:\n\n- ADMIN\n    \n\nParámetros de ruta:\n\n- id_usuario\n    \n    - type: integer\n        \n    - example: 1\n        \n\nEste endpoint no admite body ni query params.\n\nPosibles respuestas:\n\n- 200: Usuario encontrado.\n    \n- 403: Acceso denegado.\n    \n- 404: Usuario no encontrado.\n    \n- 422: El endpoint no admite body ni query params."
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Health Checks",
+              "item": [
+                {
+                  "name": "health",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/health",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    },
+                    "description": "Endpoint que devuelve el nombre del servicio y su estado para poder comprobar que el servicio está activo y en funcionamiento.\n\nSi devuelve datos el servicio funciona correctamente, si no devuelve nada o falla el servicio está caido. Se usa para tener control del estado del servicio en todo momento."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "deep health",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/health/deep",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "health",
+                        "deep"
+                      ]
+                    },
+                    "description": "Este endpoint combina todas las comprobaciones de un servicio en uno.\n\nComprueba que se puede conectar a la Base de Datos SQLite propia y que el servicio de administración está funcionando."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "readiness",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url admin_service}}/ready",
+                      "host": [
+                        "{{UOC final project base url admin_service}}"
+                      ],
+                      "path": [
+                        "ready"
+                      ]
+                    },
+                    "description": "Comprueba que el servicio tiene acceso a la Base de Datos. En este caso puede no llegar a ser necesario dado que tenemos una base de datos SQLite, pero puede darse el caso que de manera accidental se borre el fichero que contiene los datos (.db).\n\nUn caso real más claro es el de un entorno profesional real que suele tener Bases de Datos distintas de SQLite como pueden ser PostgreSQL o SQL Server que están alojadas en algunos servidores. Este endpoint se encargaría de comprobar la conexióna dicha o dichas bases de datos. En caso de que no funcione, y el health si devuelva datos habría que comprobar o credenciales o estado del servidor."
+                  },
+                  "response": []
+                }
+              ],
+              "description": "Endpoints used for API state monitorization"
+            },
+            {
+              "name": "login",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{UOC final project base url admin_service}}/auth/login",
+                  "host": [
+                    "{{UOC final project base url admin_service}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                },
+                "description": "Login de usuario.\n\nRoles permitidos:\n\n- Público (no requiere autenticación)\n    \n\nCuerpo de la petición, con datos de ejemplo y tipos de datos:\n\n- body\n    \n    - required: true\n        \n    - schema\n        \n        - username:\n            \n            - type: string\n                \n            - example: admin\n                \n        - password:\n            \n            - type: string\n                \n            - example: admin123\n                \n\nY devuelve el access token. Estas son las posibles respuestas:\n\n- 200: Login correcto. Devuelve el token JWT de acceso.\n    \n- 401: Credenciales inválidas\n    \n- 404: Usuario no encontrado"
+              },
+              "response": []
+            },
+            {
+              "name": "me",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{UOC final project base url admin_service}}/auth/me",
+                  "host": [
+                    "{{UOC final project base url admin_service}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                },
+                "description": "Información del usuario autenticado\n\nPosibles respuestas:\n\n- 200: Usuario autenticado\n    \n- 404: Usuario no encontrado"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "CITAS",
+          "item": [
+            {
+              "name": "Health Checks",
+              "item": [
+                {
+                  "name": "health",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/health",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    },
+                    "description": "Endpoint que devuelve el nombre del servicio y su estado para poder comprobar que el servicio está activo y en funcionamiento.\n\nSi devuelve datos el servicio funciona correctamente, si no devuelve nada o falla el servicio está caido. Se usa para tener control del estado del servicio en todo momento."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "deep health",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/health/deep",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "health",
+                        "deep"
+                      ]
+                    },
+                    "description": "Este endpoint combina todas las comprobaciones de un servicio en uno. En este caso (ADMIN) es exactamente lo mismo que readiness. Se crea para mantener la estructura lo mas limpia, coherente y profesional posible.\n\nComprueba que se puede conectar a la Base de Datos SQLite. En un entorno real haría todas las comprobaciones hacia Base de Datos y comprobaría el estado de los servicios de los que depende. Se verá más claro en el caso del servicio de Gestión de Citas."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "readiness",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/ready",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "ready"
+                      ]
+                    },
+                    "description": "Comprueba que el servicio tiene acceso a la Base de Datos. En este caso puede no llegar a ser necesario dado que tenemos una base de datos SQLite, pero puede darse el caso que de manera accidental se borre el fichero que contiene los datos (.db).\n\nUn caso real más claro es el de un entorno profesional real que suele tener Bases de Datos distintas de SQLite como pueden ser PostgreSQL o SQL Server que están alojadas en algunos servidores. Este endpoint se encargaría de comprobar la conexióna dicha o dichas bases de datos. En caso de que no funcione, y el health si devuelva datos habría que comprobar o credenciales o estado del servidor."
+                  },
+                  "response": []
+                }
+              ],
+              "description": "Endpoints used for API state monitorization"
+            },
+            {
+              "name": "Citas",
+              "item": [
+                {
+                  "name": "Crear cita",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"fecha\": \"2026-08-01 10:00\",\r\n  \"motivo\": \"Revision anual\",\r\n  \"id_paciente\": 1,\r\n  \"id_doctor\": 1,\r\n  \"id_centro\": 1\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/citas",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "citas"
+                      ]
+                    },
+                    "description": "Crea una nueva cita médica.\n\nRoles permitidos:\n\n- ADMIN\n    \n- PACIENTE\n    \n\nCuerpo de la petición, con datos de ejemplo y tipos de datos:\n\n- body     \n    \n    - required: true     \n        \n- schema       \n    \n    - fecha:           \n        \n        - type: string           \n            \n        - example: 2026-07-01 09:00\n            \n    - motivo:           \n        \n        - type: string           \n            \n        - example: Revisión anual\n            \n    - id_paciente:           \n        \n        - type: integer           \n            \n        - example: 1\n            \n    - id_doctor:           \n        \n        - type: integer           \n            \n        - example: 3\n            \n    - id_centro:           \n        \n        - type: integer           \n            \n        - example: 1\n            \n\nEn caso de que la cita coincida en los horarios del doctor con otra cita devolverá error ya que no es posible crear una cita en esa situación\n\nPosibles respuestas:\n\n- 201: Cita creada correctamente\n    \n- 400: Datos inválidos\n    \n- 404: Paciente, doctor o centro no encontrado\n    \n- 409:  Conflicto de agendaEndFragment"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Listar citas",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/citas?page=1&size=1000&fecha=a",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "citas"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "key": "size",
+                          "value": "1000"
+                        },
+                        {
+                          "key": "fecha",
+                          "value": "a",
+                          "type": "text"
+                        },
+                        {
+                          "key": "id_doctor",
+                          "value": null,
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "id_paciente",
+                          "value": null,
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "id_centro",
+                          "value": null,
+                          "type": "text",
+                          "disabled": true
+                        },
+                        {
+                          "key": "estado",
+                          "value": "CANCELADA",
+                          "disabled": true
+                        }
+                      ]
+                    },
+                    "description": "Obtiene un listado paginado de citas.\n\nRoles permitidos:\n\n- ADMIN\n    \n- SECRETARIA\n    \n- MEDICO  \n    \n\nParámetros de consulta:\n\nquery params\n\n- fecha\n    \n    - type: string\n        \n    - example: 2026-07-01\n        \n- id_doctor\n    \n    - type: integer\n        \n    - example: 3\n        \n- id_paciente\n    \n    - type: integer\n        \n    - example: 1\n        \n- id_centro\n    \n    - type: integer\n        \n    - example: 1\n        \n- estado\n    \n    - type: string\n        \n    - example: PROGRAMADA\n        \n- page\n    \n    - type: integer\n        \n    - example: 1\n        \n- per_page\n    \n    - type: integer\n        \n    - example: 10\n        \n\nValidaciones:\n\n- Solo se admiten los parámetros de consulta permitidos para el rol autenticado.\n    \n- Los parámetros de paginación deben ser valores enteros positivos.\n    \n- Los filtros no permitidos para un rol devolverán un error de validación.\n    \n\nReglas de negocio:\n\nADMIN:\n\n- Puede consultar todas las citas.\n    \n- Puede filtrar por doctor, paciente, centro, fecha y estado.\n    \n\nSECRETARIA:\n\n- Puede consultar todas las citas.\n    \n- Puede filtrar únicamente por fecha.  \n    \n\nMEDICO:\n\n- Solo puede consultar sus propias citas.\n    \n- Puede filtrar por fecha. (No parte de los requerimientos funcionales, resultado de pensar un caso real)\n    \n\nPosibles respuestas:\n\n- 200: Listado obtenido correctamente.\n    \n- 403: Acceso denegado.\n    \n- 422: Parámetros de consulta inválidos."
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Cancelar cita",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"fecha\": \"2026-07-01 10:00\",\r\n  \"motivo\": \"Revision anual\",\r\n  \"id_paciente\": 1,\r\n  \"id_doctor\": 1,\r\n  \"id_centro\": 1\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{UOC final project base url citas_service}}/citas/1",
+                      "host": [
+                        "{{UOC final project base url citas_service}}"
+                      ],
+                      "path": [
+                        "citas",
+                        "1"
+                      ]
+                    },
+                    "description": "Cancela una cita médica existente.\n\nRoles permitidos:\n\n- ADMIN\n    \n- SECRETARIA\n    \n\nParámetros de ruta:\n\n- id_cita\n    \n    - type: integer\n        \n    - example: 15\n        \n\nValidaciones:\n\n- El endpoint no admite body.\n    \n- El endpoint no admite query params.\n    \n\nReglas de negocio:\n\n- La cita debe existir.\n    \n- No es posible cancelar una cita ya cancelada.\n    \n\nPosibles respuestas:\n\n- 200: Cita cancelada correctamente.  \n    \n- 404: Cita no encontrada.  \n    \n- 409: La cita ya está cancelada.  \n    \n- 422: El endpoint no admite body ni query params."
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4MDU5MDYzNSwianRpIjoiMDJmMWYxMmMtNzI4Yi00MDkzLWEwNjEtNDVhMTM3N2ZkNjA5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3ODA1OTA2MzUsImNzcmYiOiJhOWEyZTExNC1iOWZjLTQ5MjctOTU3Yi0wYTk4YTAzNGJmZDQiLCJleHAiOjE3ODA2MTk0MzUsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4ifQ.a3S3Rj2ZC8RXC_AFs1JWZ_lX1BhtYNXBr_K_OwiBEBk",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "UOC final project base url admin_service",
+      "value": ""
+    },
+    {
+      "key": "UOC final project base url citas_service",
+      "value": ""
+    }
+  ]
+}

@@ -13,6 +13,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+"""
+Valida la existencia de un paciente
+
+Parámetros:
+- nombre: int
+
+Funcionamiento:
+- Comprueba la existencia de un paciente.
+
+Retorno:
+
+Success:
+(
+    True,
+    None
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_nuevo_paciente(nombre):
 
     paciente_existente = Paciente.query.filter_by(
@@ -53,6 +80,35 @@ def validar_nuevo_paciente(nombre):
         None
     )
 
+
+"""
+Servicio de creación de pacientes.
+
+Responsabilidades:
+- Obtener los datos de la petición.
+- Validar paciente.
+- Registrar el paciente en base de datos.
+
+Validaciones:
+- No debe existir el paciente.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": paciente.to_dict(),
+        "status_code": 201
+    }
+)
+
+Error:
+(
+    ok, 
+    resultado
+)
+"""
 def crear_paciente():
 
     data = request.get_json()
@@ -99,6 +155,30 @@ def crear_paciente():
         }
     )
 
+
+"""
+Servicio de listado de pacientes.
+
+Responsabilidades:
+- Obtener los pacientes que se indican.
+
+Retorno:
+(
+    True, 
+    {
+        "data": [
+            u.to_dict()
+            for u in pagination.items
+        ],
+        "pagination": {
+            "page": pagination.page,
+            "size": pagination.per_page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages
+        }
+    }
+)
+"""
 def listar_pacientes():
     
     page, size = get_pagination()
@@ -120,6 +200,37 @@ def listar_pacientes():
         }
     }
 
+
+"""
+Servicio de consulta de pacientes.
+
+Parámetros:
+- id_paciente: int
+
+Responsabilidades:
+- Obtener el paciente que se indica.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": paciente.to_dict(),
+        "status_code": 200
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def obtener_paciente(id_paciente):
     paciente = Paciente.query.get(id_paciente)
 

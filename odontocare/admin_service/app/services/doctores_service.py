@@ -13,6 +13,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+"""
+Valida la existencia de un doctor
+
+Parámetros:
+- nombre: int
+
+Funcionamiento:
+- Comprueba la existencia de un doctor.
+
+Retorno:
+
+Success:
+(
+    True,
+    None
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_nuevo_doctor(nombre):
 
     doctor_existente = Doctor.query.filter_by(
@@ -36,6 +63,35 @@ def validar_nuevo_doctor(nombre):
         None
     )
 
+
+"""
+Servicio de creación de doctores.
+
+Responsabilidades:
+- Obtener los datos de la petición.
+- Validar doctor.
+- Registrar el doctor en base de datos.
+
+Validaciones:
+- No debe existir el doctor.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": doctor.to_dict(),
+        "status_code": 201
+    }
+)
+
+Error:
+(
+    ok, 
+    resultado
+)
+"""
 def crear_doctor():
 
     data = request.get_json()
@@ -81,6 +137,30 @@ def crear_doctor():
         }
     )
 
+
+"""
+Servicio de listado de doctores.
+
+Responsabilidades:
+- Obtener los doctores que se indican.
+
+Retorno:
+(
+    True, 
+    {
+        "data": [
+            u.to_dict()
+            for u in pagination.items
+        ],
+        "pagination": {
+            "page": pagination.page,
+            "size": pagination.per_page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages
+        }
+    }
+)
+"""
 def listar_doctores():
     
     page, size = get_pagination()
@@ -102,6 +182,37 @@ def listar_doctores():
         }
     }
 
+
+"""
+Servicio de consulta de doctores.
+
+Parámetros:
+- id_doctor: int
+
+Responsabilidades:
+- Obtener el doctor que se indica.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": doctor.to_dict(),
+        "status_code": 200
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def obtener_doctor(id_doctor):
 
     doctor = Doctor.query.get(id_doctor)

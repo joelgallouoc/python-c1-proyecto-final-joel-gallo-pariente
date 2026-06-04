@@ -9,7 +9,29 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+"""
+Middleware de monitorización de peticiones y respuestas
+"""
 def register_request_logging(app):
+
+    """
+    Middleware de monitorización de peticiones.
+
+    Registra información de entrada para cada petición.
+
+    Información registrada:
+    - Usuario autenticado.
+    - Método HTTP.
+    - Endpoint.
+    - Query params.
+    - Payload recibido.
+
+    Objetivo:
+    - Trazabilidad.
+    - Auditoría.
+    - Diagnóstico de errores.
+    """
 
     @app.before_request
     def before_request_logging():
@@ -38,7 +60,24 @@ def register_request_logging(app):
             dict(request.args),
             request.get_json(silent=True)
         )
-        
+     
+    
+    """
+    Middleware de monitorización de respuestas.
+
+    Registra información de salida para cada petición.
+
+    Información registrada:
+    - Dirección IP.
+    - Método HTTP.
+    - Endpoint.
+    - Código de respuesta.
+
+    Objetivo:
+    - Seguimiento de actividad.
+    - Diagnóstico de incidencias.
+    - Monitorización del servicio.
+    """    
     @app.after_request
     def after_request_logging(response):
 

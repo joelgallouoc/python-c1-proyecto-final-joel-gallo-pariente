@@ -22,6 +22,35 @@ from app.utils.pagination import get_pagination
 logger = logging.getLogger(__name__)
 
 
+"""
+Valida la existencia y estado de un paciente.
+
+Parámetros:
+- paciente_id: int
+- token: str
+
+Funcionamiento:
+- Consulta el servicio de administración.
+- Comprueba la existencia del paciente.
+- Comprueba que se encuentre en estado ACTIVO.
+
+Retorno:
+
+Success:
+(
+    True,
+    paciente
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_paciente(
     paciente_id,
     token
@@ -59,6 +88,35 @@ def validar_paciente(
         paciente
     )
 
+
+"""
+Valida la existencia de un doctor
+
+Parámetros:
+- doctor_id: int
+- token: str
+
+Funcionamiento:
+- Consulta el servicio de administración.
+- Comprueba la existencia del doctor.
+
+Retorno:
+
+Success:
+(
+    True,
+    response.json()["data"]
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_doctor(
     doctor_id,
     token
@@ -84,6 +142,35 @@ def validar_doctor(
         response.json()["data"]
     )
 
+
+"""
+Valida la existencia de un centro
+
+Parámetros:
+- centro_id: int
+- token: str
+
+Funcionamiento:
+- Consulta el servicio de administración.
+- Comprueba la existencia del centro.
+
+Retorno:
+
+Success:
+(
+    True,
+    response.json()["data"]
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def validar_centro(
     centro_id,
     token
@@ -109,6 +196,35 @@ def validar_centro(
         response.json()["data"]
     )
 
+
+"""
+Comprueba si existe una cita para este doctor en el mismo horario
+
+Parámetros:
+- doctor_id: int
+- fecha: str
+
+Funcionamiento:
+- Consulta las citas del doctor para esa fecha.
+- Si obtiene alguna existe conflicto.
+
+Retorno:
+
+Success:
+(
+    True,
+    None
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def existe_conflicto(
     doctor_id,
     fecha
@@ -134,9 +250,40 @@ def existe_conflicto(
         None
     )
 
-# Validación de nueva cita. Se comprueba que el paciente, doctor y centro existen, que el doctor está disponible a esa hora, etc... 
-# Se usa un booleano 'ok' para indicar si la validación ha sido correcta o no, y un diccionario 'resultado' para almacenar el mensaje de error o los datos de la cita creada.
-# En caso de que alguna validación falle, se devuelve un error con el mensaje correspondiente.
+
+"""
+Comprueba si existe una cita para este doctor en el mismo horario
+
+Parámetros:
+- data: any
+- token: str
+
+Responsabilidades:
+- Validar paciente.
+- Validar doctor.
+- Validar centro.
+- Comprobar disponibilidad del doctor.
+
+Validaciones:
+- El paciente debe existir.
+- El paciente debe estar activo.
+- El doctor debe existir.
+- El centro debe existir.
+- No debe existir conflicto horario.
+
+Retorno:
+
+Success:
+(
+    True,
+    None
+)
+
+Error:
+(
+    ok, resultado
+)
+"""
 def validar_nueva_cita(
     data,
     token
@@ -183,6 +330,42 @@ def validar_nueva_cita(
         None
     )
 
+
+"""
+Servicio de creación de citas.
+
+Responsabilidades:
+- Obtener los datos de la petición.
+- Validar paciente.
+- Validar doctor.
+- Validar centro.
+- Comprobar disponibilidad del doctor.
+- Registrar la cita en base de datos.
+
+Validaciones:
+- El paciente debe existir.
+- El paciente debe estar activo.
+- El doctor debe existir.
+- El centro debe existir.
+- No debe existir conflicto horario.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": cita.to_dict(),
+        "status_code": 201
+    }
+)
+
+Error:
+(
+    ok, 
+    resultado
+)
+"""
 def crear_cita():
     
     data = request.get_json()
@@ -226,6 +409,34 @@ def crear_cita():
 
     return True, { "data": cita.to_dict(), "status_code": 201 }
 
+
+"""
+Servicio de consulta de citas.
+
+Parámetros:
+- id_cita: int
+
+Responsabilidades:
+- Obtener la cita que se indica.
+
+Retorno:
+
+Success:
+(
+    True,
+    cita.to_dict()
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def consultar_cita(
     id_cita
 ):
@@ -248,6 +459,30 @@ def consultar_cita(
         cita.to_dict()
     )
 
+
+"""
+Servicio de listado de citas.
+
+Responsabilidades:
+- Obtener las cita que se indica.
+
+Retorno:
+(
+    True, 
+    {
+        "data": [
+            cita.to_dict()
+            for cita in pagination.items
+        ],
+        "pagination": {
+            "page": pagination.page,
+            "size": pagination.per_page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages
+        }
+    }
+)
+"""
 def obtener_listado_citas():
 
     claims = get_jwt()
@@ -357,6 +592,35 @@ def obtener_listado_citas():
         }
     }
 
+
+"""
+Servicio de cancelacion de citas.
+
+Parámetros:
+- id_cita: int
+
+Responsabilidades:
+- Cancelar la cita indicada.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "message" : str
+    }   
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def cancelacion_cita(
     id_cita
 ):

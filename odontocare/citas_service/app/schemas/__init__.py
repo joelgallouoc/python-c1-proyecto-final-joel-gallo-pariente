@@ -1,24 +1,8 @@
-from typing import Optional
-
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field
-)
-
-class NewBaseModel(BaseModel):
-    model_config = ConfigDict(
-        extra="forbid"
-    )
-
-class PaginationSchema(NewBaseModel):
+from app.utils.enums import Roles
+from app.schemas.citas import AdminCitaFiltersSchema, DoctorAppointmentFiltersSchema, SecretariaAppointmentFiltersSchema
     
-    page: Optional[int] = Field(
-        default=1,
-        gt=0
-    )
-
-    per_page: Optional[int] = Field(
-        default=100,
-        gt=0
-    )
+schema_by_role = {
+    Roles.ADMIN.value : AdminCitaFiltersSchema,
+    Roles.SECRETARIA.value : SecretariaAppointmentFiltersSchema,
+    Roles.DOCTOR.value : DoctorAppointmentFiltersSchema
+}

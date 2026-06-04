@@ -14,6 +14,34 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+"""
+Servicio de log in.
+
+Responsabilidades:
+- Autenticar a los usuarios.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": {
+            "access_token": token
+        }
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def log_in():
    
     data = request.get_json()
@@ -49,6 +77,33 @@ def log_in():
 
     return True, {"data": {"access_token": token}}
 
+
+"""
+Servicio de obtención del usuario que se autentica.
+
+Responsabilidades:
+- Devolver datos del usuario del token JWT.
+
+Retorno:
+
+Success:
+(
+    True,
+    {
+        "data": usuario.to_dict()
+    }
+    
+)
+
+Error:
+(
+    False,
+    {
+        "message": str,
+        "status_code": int
+    }
+)
+"""
 def obtain_me():
     user_id = int(get_jwt_identity())
 

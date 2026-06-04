@@ -7,6 +7,34 @@ from flask_jwt_extended import (
     get_jwt
 )
 
+
+"""
+Decorador de autorización basado en roles.
+
+Verifica que el usuario autenticado mediante JWT posea
+uno de los roles permitidos para acceder al endpoint.
+
+Funcionamiento:
+- Comprueba la existencia de un JWT válido.
+- Obtiene los claims del token.
+- Valida que el rol contenido en el claim 'role'
+  pertenezca a la lista de roles permitidos.
+
+Parámetros:
+- *roles:
+  Lista variable de roles autorizados.
+
+Ejemplo:
+@role_required("ADMIN")
+
+@role_required(
+    "ADMIN",
+    "SECRETARIA"
+)
+
+Posibles respuestas:
+- 403: Access denied
+"""
 def role_required(*roles):
 
     def decorator(fn):
@@ -17,9 +45,6 @@ def role_required(*roles):
             verify_jwt_in_request()
 
             claims = get_jwt()
-
-            print(claims)
-            print(roles)
 
             if claims["role"] not in roles:
 

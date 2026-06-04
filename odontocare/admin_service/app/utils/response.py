@@ -1,6 +1,17 @@
 from flask import jsonify
 
 
+"""
+Servicio de formateo de mensajes de respuesta correctos.
+
+Campos:
+- data
+- message
+- pagination
+- status_code=200 (valor default)
+
+Utilizado por todos los endpoints
+"""
 def success_response(
     data=None,
     message=None,
@@ -24,9 +35,19 @@ def success_response(
     return jsonify(payload), status_code
 
 
+"""
+Servicio de formateo de mensajes de error.
+
+Campos:
+- message
+- status_code=400(Default)
+- data
+
+Utilizado por todos los endpoints
+"""
 def error_response(
     message,
-    status_code,
+    status_code=400,
     data=None
 ):
 

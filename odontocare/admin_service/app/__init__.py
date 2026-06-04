@@ -17,6 +17,9 @@ from app.blueprints.system_bp import system_bp
 from app.handlers.error_handlers import register_error_handlers
 from app.monitoring.request_logging import register_request_logging
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def create_app():
 
@@ -52,8 +55,8 @@ def create_app():
             db.session.add(admin)
             db.session.commit()
 
-            print(
-                "Usuario admin creado"
+            logger.info(
+                "Usuario admin básico creado with username admin and password admin123"
             )
 
     swagger_config = {

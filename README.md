@@ -132,10 +132,12 @@ Se deberá entregar documentación o scripts que incluyan, de forma clara y orde
 * **Endpoint utilizado**: Ruta completa del servicio REST.
 * **Archivo de entrada**: Cuerpo de la solicitud enviado, obligatoriamente en formato **JSON**.
 
-Se genera documentación swagger accesible a traves de:
+Se genera documentación detallada en PostMan con cada uno de los endpoints, su estructura, y lo que realizan. El fichero es un .json en la raiz del proyecto llamado postman_collection.json. Se ha de importar directamente en PostMan. En caso de no tener postman instalado, existe versión OnLine. Esta es la principal documentación aparte de los comentarios a nivel de código
+
+Se genera además documentación swagger accesible a traves de:
 * {BASE_SERVICE_URL}/apidocs
 
-Adicionalmente a nivel de código se comenta el código correctamente para facilitar su comprensión y se añade una colección de PostMan para poder realizar peticiones sobre los endpoints.
+Se encuentran diversos errores de identación que limitan la disponibilidad de esta documentación en Swagger. PENDIENTE DE ARREGLAR (Aunque esto es opcional)
 
 ---
 
@@ -148,3 +150,5 @@ Se requiere una demostración visual, clara y concisa del aplicativo desarrollad
 * **Duración máxima**: 5 minutos.
 * **Contenido**: Debe evidenciar claramente el funcionamiento completo del aplicativo, incluyendo la interacción entre los microservicios.
 * **Funcionamiento**: Mostrar el flujo de trabajo del sistema, desde la inicialización de los servicios hasta la creación de una cita médica, destacando la comunicación RESTful entre los módulos.
+
+**Adicionalmente se añade un vídeo explicando todos los detalles no indicados en los requerimientos usados en el proyecto**

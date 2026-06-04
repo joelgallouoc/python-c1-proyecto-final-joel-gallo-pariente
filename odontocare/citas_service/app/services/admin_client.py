@@ -57,7 +57,7 @@ def check_admin_service():
     try:
 
         response = requests.get(
-            f"{ADMIN_URL}/health",
+            f"{ADMIN_URL}/ready",
             timeout=3
         )
 
