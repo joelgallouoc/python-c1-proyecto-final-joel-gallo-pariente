@@ -10,7 +10,9 @@ from app.services.auth_service import log_in, obtain_me
 
 import logging
 
-from app.decorators.exception_handler import handle_exceptions
+from app.decorators.schema_validation import validate_body
+from app.schemas.auth import LoginSchema
+from app.decorators.request_data_validation import validate_request_data
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +25,8 @@ auth_bp = Blueprint(
 
 
 @auth_bp.route("/login", methods=["POST"])
+@validate_request_data(body_required=True)
+@validate_body(LoginSchema)
 def login():
 
   """
@@ -73,6 +77,7 @@ def login():
 
 @auth_bp.route("/me", methods=["GET"])
 @jwt_required()
+@validate_request_data()
 def me():
 
   """

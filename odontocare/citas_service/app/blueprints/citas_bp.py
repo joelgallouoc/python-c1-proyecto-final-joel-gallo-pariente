@@ -1,12 +1,6 @@
-from flask import (
-    Blueprint,
-    request
-)
+from flask import Blueprint
 
-from flask_jwt_extended import (
-    jwt_required,
-    get_jwt
-)
+from flask_jwt_extended import jwt_required
 
 from app.utils.response import (
     success_response,
@@ -18,6 +12,9 @@ from app.services.citas_service import cancelacion_cita, crear_cita, obtener_lis
 import logging
 
 from app.decorators.role_required import role_required
+from app.decorators.request_data_validation import validate_request_data
+from app.decorators.schema_validation import validate_body, validate_query
+from app.schemas.citas import CreateAppointmentSchema, AppointmentFiltersSchema
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +30,8 @@ citas_bp = Blueprint(
 @citas_bp.route("", methods=["POST"])
 @jwt_required()
 @role_required("ADMIN", "CLIENTE")
+@validate_request_data(body_required=True)
+@validate_body(CreateAppointmentSchema)
 def agendar_cita():
 
   """
@@ -108,6 +107,7 @@ def agendar_cita():
 @citas_bp.route("/<int:id_cita>", methods=["PUT"])
 @jwt_required()
 @role_required("ADMIN", "SECRETARIA")
+@validate_request_data()
 def cancelar_cita(id_cita):
 
   """
@@ -161,6 +161,8 @@ def cancelar_cita(id_cita):
 @citas_bp.route("", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN", "SECRETARIA", "MEDICO")
+@validate_request_data(query_required=True)
+@validate_query(AppointmentFiltersSchema)
 def listar_citas():
 
   """

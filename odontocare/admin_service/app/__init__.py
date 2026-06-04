@@ -14,8 +14,8 @@ from app.models.usuario import Usuario
 from app.blueprints.auth_bp import auth_bp
 from app.blueprints.admin_bp import admin_bp
 from app.blueprints.system_bp import system_bp
-from odontocare.admin_service.app.handlers.error_handlers import register_error_handlers
-from odontocare.admin_service.app.monitoring.request_logging import register_request_logging
+from app.handlers.error_handlers import register_error_handlers
+from app.monitoring.request_logging import register_request_logging
 
 
 def create_app():

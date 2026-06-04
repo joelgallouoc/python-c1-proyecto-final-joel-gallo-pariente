@@ -26,10 +26,17 @@ def success_response(
 
 def error_response(
     message,
-    status_code=400
+    status_code,
+    data=None
 ):
 
-    return jsonify({
+    response = {
         "success": False,
         "message": message
-    }), status_code
+    }
+
+    if data is not None:
+
+        response["data"] = data
+
+    return jsonify(response), status_code

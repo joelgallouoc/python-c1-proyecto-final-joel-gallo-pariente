@@ -18,6 +18,9 @@ from app.services.usuarios_service import crear_usuario, listar_usuarios, obtene
 from app.services.doctores_service import crear_doctor, listar_doctores, obtener_doctor
 from app.services.pacientes_service import crear_paciente, listar_pacientes, obtener_paciente
 from app.services.centros_service import crear_centro, listar_centros, obtener_centro
+from app.decorators.schema_validation import validate_body, validate_query
+from app.decorators.request_data_validation import validate_request_data
+from app.schemas.usuarios import CreateUserSchema
 
 admin_bp = Blueprint(
     "admin_bp",
@@ -31,6 +34,10 @@ admin_bp = Blueprint(
 @jwt_required()
 @role_required("ADMIN")
 @user_role_required("ADMIN", "SECRETARIA")
+@validate_request_data(body_required=True)
+@validate_body(
+    CreateUserSchema
+)
 def creacion_usuario(): 
 
     ok, resultado = crear_usuario()
@@ -47,6 +54,7 @@ def creacion_usuario():
 @admin_bp.route("/usuarios", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(query_required=True)
 def listado_de_usuarios():
 
     user_list = listar_usuarios()
@@ -60,6 +68,7 @@ def listado_de_usuarios():
 @admin_bp.route("/usuarios/<int:id_usuario>", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data()
 def obtencion_usuario(id_usuario):
 
     ok, resultado = obtener_usuario(id_usuario)
@@ -77,6 +86,7 @@ def obtencion_usuario(id_usuario):
 @admin_bp.route("/pacientes", methods=["POST"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(body_required=True)
 def creacion_paciente():
 
     ok, resultado = crear_paciente()
@@ -93,6 +103,7 @@ def creacion_paciente():
 @admin_bp.route("/pacientes/<int:id_paciente>", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data()
 def obtencion_paciente(id_paciente):
 
     ok, resultado = obtener_paciente(id_paciente)
@@ -109,6 +120,7 @@ def obtencion_paciente(id_paciente):
 @admin_bp.route("/pacientes", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(query_required=True)
 def listado_pacientes():
 
     listado_pacientes = listar_pacientes()
@@ -122,6 +134,7 @@ def listado_pacientes():
 @admin_bp.route("/doctores", methods=["POST"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(body_required=True)
 def creacion_doctor():
 
     ok, resultado = crear_doctor()
@@ -138,6 +151,7 @@ def creacion_doctor():
 @admin_bp.route("/doctores/<int:id_doctor>", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data()
 def obtencion_doctor(id_doctor):
 
     ok, resultado = obtener_doctor(id_doctor)
@@ -154,6 +168,7 @@ def obtencion_doctor(id_doctor):
 @admin_bp.route("/doctores", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(query_required=True)
 def listado_doctores():
 
     doctor_list = listar_doctores()
@@ -169,6 +184,7 @@ def listado_doctores():
 @admin_bp.route("/centros", methods=["POST"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(body_required=True)
 def creacion_centro():
 
     ok, resultado = crear_centro()
@@ -185,6 +201,7 @@ def creacion_centro():
 @admin_bp.route("/centros/<int:id_centro>", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data()
 def obtencion_centro(id_centro):
 
     ok, resultado = obtener_centro(id_centro)
@@ -201,6 +218,7 @@ def obtencion_centro(id_centro):
 @admin_bp.route("/centros", methods=["GET"])
 @jwt_required()
 @role_required("ADMIN")
+@validate_request_data(query_required=True)
 def listado_centros():
 
     ok, resultado = listar_centros()
